@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: warbox
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/warbox}
+    username: ${DB_USERNAME:warbox}
+    password: ${DB_PASSWORD:warbox}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: ${SERVER_PORT:8080}
