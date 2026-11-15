@@ -63,6 +63,27 @@ describe('AppLayout', () => {
     ).toBeInTheDocument()
   })
 
+  it('shows "Seja criador" when the user has no creator profile', async () => {
+    mockFetch({
+      'GET /api/auth/me': () => jsonResponse(VERIFIED),
+      'GET /api/creators/me': () => errorResponse(404, 'CREATOR_PROFILE_NOT_FOUND'),
+    })
+    renderLayout()
+    expect(await screen.findByRole('link', { name: 'Seja criador' })).toHaveAttribute('href', '/criador/ativar')
+    expect(screen.queryByRole('link', { name: 'Meu perfil' })).not.toBeInTheDocument()
+  })
+
+  it('shows "Meu perfil" linking to the public page when the user is a creator', async () => {
+    mockFetch({
+      'GET /api/auth/me': () => jsonResponse(VERIFIED),
+      'GET /api/creators/me': () =>
+        jsonResponse({ id: 'c1', handle: 'davi', displayName: 'Davi', bio: null, createdAt: 'x', updatedAt: 'x' }),
+    })
+    renderLayout()
+    expect(await screen.findByRole('link', { name: 'Meu perfil' })).toHaveAttribute('href', '/c/davi')
+    expect(screen.queryByRole('link', { name: 'Seja criador' })).not.toBeInTheDocument()
+  })
+
   it('logs out and shows Entrar again', async () => {
     const spy = mockFetch({
       'GET /api/auth/me': () => jsonResponse(VERIFIED),

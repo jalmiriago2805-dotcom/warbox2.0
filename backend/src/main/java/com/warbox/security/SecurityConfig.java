@@ -27,7 +27,7 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 /**
  * Server-side session (JSESSIONID, httpOnly) + SPA CSRF (cookie XSRF-TOKEN, header X-XSRF-TOKEN).
- * Public routes are listed in {@link #securityFilterChain}; everything else requires a session.
+ * Public routes (including GET /api/creators/{handle}) are listed in {@link #securityFilterChain}; everything else requires a session.
  */
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
@@ -47,6 +47,8 @@ public class SecurityConfig {
                                 "/api/auth/logout",
                                 "/api/auth/verify-email",
                                 "/api/auth/password-reset/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/creators/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/creators/*").permitAll()
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(csrfTokenRepository)

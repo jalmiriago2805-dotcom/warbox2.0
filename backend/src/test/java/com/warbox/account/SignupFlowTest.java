@@ -41,7 +41,7 @@ class SignupFlowTest {
 
     @BeforeEach
     void reset() {
-        jdbc.execute("TRUNCATE TABLE account_tokens, users");
+        jdbc.execute("TRUNCATE TABLE creator_profiles, account_tokens, users");
         emails.clear();
     }
 
