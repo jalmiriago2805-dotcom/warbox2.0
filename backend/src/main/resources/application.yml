@@ -47,3 +47,12 @@ warbox:
     email-verification-ttl: 24h
     password-reset-ttl: 1h
     email-cooldown: 60s
+  cloudflare:
+    # Cloudflare Stream. Without account-id/api-token the video endpoints answer 502 VIDEO_PROVIDER_UNAVAILABLE.
+    api-base-url: ${CLOUDFLARE_API_BASE_URL:https://api.cloudflare.com/client/v4}
+    account-id: ${CLOUDFLARE_ACCOUNT_ID:}
+    api-token: ${CLOUDFLARE_STREAM_API_TOKEN:}
+    stream-customer-code: ${CLOUDFLARE_STREAM_CUSTOMER_CODE:}
+    webhook-secret: ${CLOUDFLARE_STREAM_WEBHOOK_SECRET:}
+    max-duration-seconds: 3600
+    webhook-tolerance: 5m

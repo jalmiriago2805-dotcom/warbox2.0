@@ -36,7 +36,7 @@ class PublicCreatorProfileTest {
 
     @BeforeEach
     void reset() throws Exception {
-        jdbc.execute("TRUNCATE TABLE creator_profiles, account_tokens, users");
+        jdbc.execute("TRUNCATE TABLE videos, creator_profiles, account_tokens, users");
         emails.clear();
         MockHttpSession session = signUp(mvc, emails, "davi@example.com", true);
         activate(mvc, session, body("davi_silva", "Davi Silva", "Criador de conteúdo"))
