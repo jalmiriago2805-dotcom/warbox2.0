@@ -13,12 +13,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 /** Helpers shared by the creator integration tests. */
-final class CreatorTestSupport {
+public final class CreatorTestSupport {
 
     private CreatorTestSupport() {}
 
     /** Signs up (which logs in) and optionally verifies the e-mail; returns the session. */
-    static MockHttpSession signUp(MockMvc mvc, RecordingEmailSender emails, String email, boolean verified)
+    public static MockHttpSession signUp(MockMvc mvc, RecordingEmailSender emails, String email, boolean verified)
             throws Exception {
         MockHttpSession session = (MockHttpSession) mvc.perform(post("/api/auth/signup").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -36,7 +36,7 @@ final class CreatorTestSupport {
         return session;
     }
 
-    static String body(String handle, String displayName, String bio) {
+    public static String body(String handle, String displayName, String bio) {
         return "{\"handle\":%s,\"displayName\":%s,\"bio\":%s}".formatted(json(handle), json(displayName), json(bio));
     }
 
@@ -44,13 +44,13 @@ final class CreatorTestSupport {
         return value == null ? "null" : "\"" + value.replace("\"", "\\\"") + "\"";
     }
 
-    static ResultActions activate(MockMvc mvc, MockHttpSession session, String body) throws Exception {
+    public static ResultActions activate(MockMvc mvc, MockHttpSession session, String body) throws Exception {
         MockHttpServletRequestBuilder request = post("/api/creators/me").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON).content(body);
         return mvc.perform(session == null ? request : request.session(session));
     }
 
-    static ResultActions update(MockMvc mvc, MockHttpSession session, String body) throws Exception {
+    public static ResultActions update(MockMvc mvc, MockHttpSession session, String body) throws Exception {
         MockHttpServletRequestBuilder request = put("/api/creators/me").with(csrf())
                 .contentType(MediaType.APPLICATION_JSON).content(body);
         return mvc.perform(session == null ? request : request.session(session));

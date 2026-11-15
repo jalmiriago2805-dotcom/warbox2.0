@@ -27,7 +27,10 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 /**
  * Server-side session (JSESSIONID, httpOnly) + SPA CSRF (cookie XSRF-TOKEN, header X-XSRF-TOKEN).
- * Public routes (including GET /api/creators/{handle}) are listed in {@link #securityFilterChain}; everything else requires a session.
+ * Public routes (GET /api/creators/{handle}, GET /api/creators/{handle}/videos, POST /api/webhooks/cloudflare/stream)
+ * are listed in {@link #securityFilterChain}; everything else requires a session. {@code GET /api/creators/me/**}
+ * is declared {@code authenticated()} before the {@code GET /api/creators/*} matcher: keep that order.
+ * CSRF is ignored only for {@code /api/webhooks/**} (signature-verified).
  */
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
@@ -47,11 +50,15 @@ public class SecurityConfig {
                                 "/api/auth/logout",
                                 "/api/auth/verify-email",
                                 "/api/auth/password-reset/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/creators/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/creators/me/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/creators/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/creators/*/videos").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/webhooks/cloudflare/stream").permitAll()
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(csrfTokenRepository)
+                        // Webhooks carry no browser session; they are authenticated by an HMAC signature instead.
+                        .ignoringRequestMatchers("/api/webhooks/**")
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
                 .securityContext(context -> context.securityContextRepository(securityContextRepository))
                 .logout(logout -> logout

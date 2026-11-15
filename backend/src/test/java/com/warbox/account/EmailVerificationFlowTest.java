@@ -41,7 +41,7 @@ class EmailVerificationFlowTest {
 
     @BeforeEach
     void reset() throws Exception {
-        jdbc.execute("TRUNCATE TABLE creator_profiles, account_tokens, users");
+        jdbc.execute("TRUNCATE TABLE videos, creator_profiles, account_tokens, users");
         emails.clear();
         session = (MockHttpSession) mvc.perform(post("/api/auth/signup").with(csrf())
                         .contentType(MediaType.APPLICATION_JSON).content("""

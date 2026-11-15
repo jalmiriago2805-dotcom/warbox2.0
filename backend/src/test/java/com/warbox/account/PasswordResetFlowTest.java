@@ -39,7 +39,7 @@ class PasswordResetFlowTest {
 
     @BeforeEach
     void reset() throws Exception {
-        jdbc.execute("TRUNCATE TABLE creator_profiles, account_tokens, users");
+        jdbc.execute("TRUNCATE TABLE videos, creator_profiles, account_tokens, users");
         mvc.perform(post("/api/auth/signup").with(csrf()).contentType(MediaType.APPLICATION_JSON).content("""
                         {"name":"Carla","email":"carla@example.com","password":"%s","birthDate":"1988-07-01","acceptedTerms":true}
                         """.formatted(OLD_PASSWORD)))
@@ -171,7 +171,7 @@ class PasswordResetFlowTest {
 
     @Test
     void verificationTokenCannotBeUsedForReset() throws Exception {
-        jdbc.execute("TRUNCATE TABLE creator_profiles, account_tokens, users");
+        jdbc.execute("TRUNCATE TABLE videos, creator_profiles, account_tokens, users");
         mvc.perform(post("/api/auth/signup").with(csrf()).contentType(MediaType.APPLICATION_JSON).content("""
                         {"name":"Carla","email":"carla@example.com","password":"%s","birthDate":"1988-07-01","acceptedTerms":true}
                         """.formatted(OLD_PASSWORD)))

@@ -39,7 +39,7 @@ class CreatorProfileActivationTest {
 
     @BeforeEach
     void reset() {
-        jdbc.execute("TRUNCATE TABLE creator_profiles, account_tokens, users");
+        jdbc.execute("TRUNCATE TABLE videos, creator_profiles, account_tokens, users");
         emails.clear();
     }
 

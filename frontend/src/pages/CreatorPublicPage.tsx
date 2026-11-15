@@ -1,14 +1,16 @@
 import { Link, useParams } from 'react-router'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { useMe } from '@/features/auth/hooks'
 import { useMyCreatorProfile, usePublicCreator } from '@/features/creator/hooks'
+import { PublicVideoList } from '@/features/video/components/PublicVideoList'
+import { usePublicVideos } from '@/features/video/hooks'
 
 export function CreatorPublicPage() {
   const { handle = '' } = useParams()
   const { data: creator, isPending, isError } = usePublicCreator(handle)
   const { data: me } = useMe()
   const { data: myProfile } = useMyCreatorProfile({ enabled: !!me })
+  const videos = usePublicVideos(handle, { enabled: !!creator })
 
   if (isPending) return <p role="status">Carregando…</p>
 
@@ -60,11 +62,15 @@ export function CreatorPublicPage() {
         <h2 id="creator-videos-heading" className="text-xl font-semibold">
           Vídeos
         </h2>
-        <Card>
-          <CardContent className="text-muted-foreground">
-            Os vídeos deste criador aparecerão aqui em breve.
-          </CardContent>
-        </Card>
+        {videos.isPending ? (
+          <p role="status">Carregando vídeos…</p>
+        ) : videos.isError ? (
+          <p role="alert" className="text-destructive">
+            Não foi possível carregar os vídeos. Tente novamente mais tarde.
+          </p>
+        ) : (
+          <PublicVideoList videos={videos.data ?? []} />
+        )}
       </section>
     </article>
   )

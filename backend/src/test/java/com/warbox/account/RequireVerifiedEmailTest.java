@@ -39,7 +39,7 @@ class RequireVerifiedEmailTest {
 
     @BeforeEach
     void reset() {
-        jdbc.execute("TRUNCATE TABLE creator_profiles, account_tokens, users");
+        jdbc.execute("TRUNCATE TABLE videos, creator_profiles, account_tokens, users");
         emails.clear();
         userId = accountService.signup(new SignupRequest("Davi", "davi@example.com", "senha-forte-123",
                 LocalDate.of(1990, 1, 1), true)).getId();

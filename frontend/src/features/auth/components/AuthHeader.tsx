@@ -27,9 +27,14 @@ export function AuthHeader() {
   return (
     <nav aria-label="Conta" className="flex items-center gap-3">
       {creator ? (
-        <Link to={`/c/${creator.handle}`} className="text-sm underline-offset-4 hover:underline">
-          Meu perfil
-        </Link>
+        <>
+          <Link to="/criador/videos" className="text-sm underline-offset-4 hover:underline">
+            Meus vídeos
+          </Link>
+          <Link to={`/c/${creator.handle}`} className="text-sm underline-offset-4 hover:underline">
+            Meu perfil
+          </Link>
+        </>
       ) : creator === null ? (
         <Link to="/criador/ativar" className="text-sm underline-offset-4 hover:underline">
           Seja criador
