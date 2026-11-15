@@ -1,10 +1,13 @@
 spring:
   application:
     name: warbox
+  config:
+    # Optional root .env shared with docker-compose and Vite; every value below has a working default.
+    import: optional:file:../.env[.properties]
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/warbox}
-    username: ${DB_USERNAME:warbox}
-    password: ${DB_PASSWORD:warbox}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:warbox}
+    username: ${POSTGRES_USER:warbox}
+    password: ${POSTGRES_PASSWORD:warbox}
   jpa:
     open-in-view: false
     hibernate:

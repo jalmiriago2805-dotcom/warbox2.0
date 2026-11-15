@@ -1,2 +1,3 @@
--- Baseline of the Warbox schema. Intentionally empty: feature migrations start at V2.
-SELECT 1;
+-- Baseline of the Warbox schema.
+-- Intentionally empty: it only marks the starting point of the Flyway history.
+-- Feature migrations start at V2.
